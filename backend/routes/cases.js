@@ -16,6 +16,7 @@ router.get('/', auth, async (req, res) => {
       where,
       include: [
         { model: Suspect, through: { attributes: [] }, attributes: ['id', 'name', 'risk_level'] },
+        { model: Evidence },
         { model: User, as: 'creator', attributes: ['id', 'name'] }
       ],
       order: [['created_at', 'DESC']],
