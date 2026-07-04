@@ -4,12 +4,19 @@ const { sequelize, User, Case, Suspect, Evidence, CaseSuspect, SuspectRelation }
 
 async function seed() {
   try {
+    if (process.env.SEED_DEMO_DATA !== 'true') {
+      console.log('ℹ️ Demo seeding skipped. Set SEED_DEMO_DATA=true to seed demo data.');
+      process.exit(0);
+    }
+
     await sequelize.authenticate();
     await sequelize.sync({ force: true });
     console.log('✅ DB synced');
 
+    const demoPassword = process.env.DEMO_PASSWORD || 'change-me';
+
     // Users
-    const hash = await bcrypt.hash('password123', 12);
+    const hash = await bcrypt.hash(demoPassword, 12);
     const admin = await User.create({ name: 'Rishabh Mishra', email: 'admin@justice.ai', password: hash, role: 'admin' });
     const inv   = await User.create({ name: 'Rishabh Mishra', email: 'inv@justice.ai', password: hash, role: 'investigator' });
 
@@ -78,7 +85,7 @@ async function seed() {
     }
 
     console.log('✅ Seed complete!');
-    console.log('📧 Login: admin@justice.ai / password123');
+    console.log(`📧 Login: admin@justice.ai / ${demoPassword}`);
     process.exit(0);
   } catch (err) {
     console.error('❌ Seed failed:', err.message);

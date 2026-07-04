@@ -10,7 +10,9 @@ if [ ! -f .env ]; then
 fi
 # Update these lines with real credentials if needed (optional)
 # sed -i '' 's/DB_PASSWORD=.*/DB_PASSWORD=Password123!/g' .env
-# sed -i '' 's/ANTHROPIC_API_KEY=.*/ANTHROPIC_API_KEY=your_api_key_here/g' .env
+# sed -i '' 's/GROQ_API_KEY=.*/GROQ_API_KEY=your_groq_key_here/g' .env
+# sed -i '' 's/OPENAI_API_KEY=.*/OPENAI_API_KEY=your_openai_key_here/g' .env
+# sed -i '' 's/ANTHROPIC_API_KEY=.*/ANTHROPIC_API_KEY=your_anthropic_key_here/g' .env
 
 npm install
 node seed.js

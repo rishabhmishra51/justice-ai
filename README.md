@@ -37,6 +37,8 @@ justice-ai/
 
 ### 1. Database Setup
 
+Create a MySQL database and user before starting the app:
+
 ```sql
 CREATE DATABASE justice_ai;
 ```
@@ -46,51 +48,75 @@ CREATE DATABASE justice_ai;
 ```bash
 cd backend
 cp .env.example .env
-# Edit .env: set DB credentials and ANTHROPIC_API_KEY
+# Edit .env and set DB credentials, JWT secret, and optional AI keys
 npm install
-node seed.js         # Load demo data
-npm start            # Runs on :5000
+PORT=5001 npm start
 ```
+
+The backend will run on port 5001 by default for local development.
 
 ### 3. Python Service
 
 ```bash
 cd python-service
 pip install -r requirements.txt
-python main.py       # Runs on :8000
+python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
 ```
+
+The Python service will run on port 8000.
 
 ### 4. Frontend
 
 ```bash
 cd frontend
 npm install
-npm start            # Runs on :3000
+PORT=3000 BROWSER=none npm start
 ```
+
+The frontend will run on port 3000.
 
 ---
 
 ## 🐳 Docker (Recommended)
 
 ```bash
-# Set your API key
-export ANTHROPIC_API_KEY=your_key_here
+# Set your runtime secrets before starting
+export MYSQL_ROOT_PASSWORD=change_me
+export DB_PASSWORD=change_me
+export JWT_SECRET=change_me
+export REACT_APP_API_URL=http://localhost:5000
 
-docker-compose up --build
+docker compose up --build
 ```
 
 Access: http://localhost:3000
+
+> Note: the Docker setup uses environment variables for secrets. Do not hardcode passwords or API keys in the repository.
 
 ---
 
 ## 🔑 Demo Login
 
-After running `seed.js`:
+Demo credentials are only used for local testing. For AWS deployment, set strong environment-based secrets and avoid shipping demo accounts in production.
 
-| Role          | Email               | Password      |
-|---------------|---------------------|---------------|
-| Admin         | admin@justice.ai    | password123   |
-| Investigator  | inv@justice.ai      | password123   |
+## 🚀 AWS Deployment Notes
+
+For deployment on AWS, the project should be prepared with:
+
+- A managed MySQL or RDS instance for the backend database
+- Environment variables for DB credentials, JWT secret, and API keys
+- A public frontend host or static hosting for the React build
+- The backend and Python service exposed through a load balancer or reverse proxy
+- Proper CORS settings via the CORS_ORIGIN environment variable
+
+For a production build of the frontend:
+
+```bash
+cd frontend
+npm run build
+```
+
+The build output in the build/ folder can be served from S3 + CloudFront or any static web server.
 
 ---
 

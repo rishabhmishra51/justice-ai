@@ -4,9 +4,15 @@ const jwt    = require('jsonwebtoken');
 const { User } = require('../models');
 const auth = require('../middleware/auth');
 
-const sign = (id) => jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret', {
-  expiresIn: process.env.JWT_EXPIRES_IN || '7d'
-});
+const sign = (id) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error('JWT_SECRET is required');
+  }
+  return jwt.sign({ id }, secret, {
+    expiresIn: process.env.JWT_EXPIRES_IN || '7d'
+  });
+};
 
 // Register
 router.post('/register', async (req, res) => {

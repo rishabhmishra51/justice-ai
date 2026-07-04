@@ -24,8 +24,10 @@ export default function AIPage() {
     setMessages(prev => [...prev, { role: 'user', content: question }]);
     setLoading(true);
     try {
-      const history = messages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n');
-      const { data } = await api.post('/ai/query', { question, context: history });
+      const conversationMessages = messages.filter((_, i) => i > 0 && i >= messages.length - 2); // Only last 2 messages, exclude initial greeting
+      const history = conversationMessages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n');
+      const context = history.length > 0 ? history : null;
+      const { data } = await api.post('/ai/query', { question, context });
       setMessages(prev => [...prev, { role: 'assistant', content: data.answer }]);
     } catch (e) {
       const errMsg = e.response?.data?.message?.includes('API') ? 

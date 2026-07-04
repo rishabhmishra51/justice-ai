@@ -9,14 +9,15 @@ function GraphCanvas({ nodes, edges }) {
   const stateRef  = useRef({ nodes: [], dragging: null, offset: { x: 0, y: 0 }, scale: 1, pan: { x: 0, y: 0 } });
 
   useEffect(() => {
-    if (!nodes.length) return;
+    if (!nodes || !nodes.suspects || !nodes.cases) return;
+    const allNodes = [...nodes.suspects, ...nodes.cases];
+    if (allNodes.length === 0) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
 
     // Layout nodes in circles
-    const allNodes = [...nodes.suspects, ...nodes.cases];
     const positioned = allNodes.map((n, i) => {
       const angle = (i / allNodes.length) * 2 * Math.PI;
       const radius = Math.min(W, H) * 0.35;
