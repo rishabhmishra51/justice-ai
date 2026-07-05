@@ -12,13 +12,20 @@ sudo usermod -aG docker "$USER"
 echo "Installing Docker Compose plugin..."
 sudo docker compose version
 
-echo "Cloning repository..."
+echo "Preparing repository..."
 cd /home/ubuntu || cd /home/ec2-user
+REPO_URL="${GITHUB_REPO_URL:-https://github.com/rishabhmishra51/justice-ai.git}"
+
+if [ -n "${GITHUB_TOKEN:-}" ] && [[ "$REPO_URL" == https://github.com/* ]]; then
+  REPO_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_URL#https://github.com/}"
+fi
+
 if [ ! -d justice-ai ]; then
-  git clone https://github.com/rishabhmishra51/justice-ai.git
+  git clone "$REPO_URL" justice-ai
 fi
 cd justice-ai
 
+git remote set-url origin "$REPO_URL" 2>/dev/null || true
 git pull origin main
 
 cat > .env <<'EOF'
