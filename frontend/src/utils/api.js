@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: process.env.REACT_APP_API_URL || '/api' });
+const fallbackBaseURL = window.location.hostname === 'localhost'
+  ? 'http://localhost:5001/api'
+  : '/api';
+
+const api = axios.create({ baseURL: process.env.REACT_APP_API_URL || fallbackBaseURL });
 
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('justice_token');

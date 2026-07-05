@@ -99,7 +99,35 @@ Access: http://localhost:3000
 
 Demo credentials are only used for local testing. For AWS deployment, set strong environment-based secrets and avoid shipping demo accounts in production.
 
-## 🚀 AWS Deployment Notes
+## 🚀 AWS EC2 Deployment
+
+### 1. Run on EC2
+
+SSH into your EC2 instance and run:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y git
+curl -fsSL https://raw.githubusercontent.com/rishabhmishra51/justice-ai/main/deploy-ec2.sh -o deploy-ec2.sh
+chmod +x deploy-ec2.sh
+./deploy-ec2.sh
+```
+
+### 2. Set environment variables
+
+Before running the script, export your secrets:
+
+```bash
+export MYSQL_ROOT_PASSWORD='strong-password'
+export DB_PASSWORD='strong-password'
+export JWT_SECRET='strong-random-secret'
+export REACT_APP_API_URL='http://YOUR_EC2_PUBLIC_IP:5001/api'
+```
+
+### 3. Access the app
+
+- Frontend: http://YOUR_EC2_PUBLIC_IP:3000
+- Backend: http://YOUR_EC2_PUBLIC_IP:5001/api/health
 
 For deployment on AWS, the project should be prepared with:
 

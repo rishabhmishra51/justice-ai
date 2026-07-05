@@ -128,7 +128,10 @@ export default function Login() {
             <div style={{ marginTop: 20, padding: '14px', background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 8 }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#60a5fa', marginBottom: 6 }}>DEMO CREDENTIALS</div>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                Register a new account to get started
+                Create a new account, or use the local demo account after seeding.
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 6 }}>
+                Local seed user: admin@justice.ai / change-me
               </div>
             </div>
           )}
